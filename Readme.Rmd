@@ -1,0 +1,57 @@
+---
+title: "Readme"
+author: "ycdu"
+date: "Saturday, December 20, 2014"
+output: 
+  html_document:
+    keep_md: true
+---
+
+This is the documentation for the BMR Calculator. Basal Metabolic Rate (BMR) is the number of calories that a person will burn if the person stayed in bed all day.
+
+If you've noticed that every year, it becomes harder to eat whatever you want and stay slim, it is probably because your BMR decreases. In general, BMR decreases as you grow older. 
+
+To calculate BMR, we will need a person's weight, height, age and gender. The equations for calculating BMR differ between female and male as below:
+
+**Women:** BMR = 655 + ( 9.6 x weight in kilograms ) + ( 1.8 x height in cm ) - ( 4.7 x age in years )
+
+**Men:** BMR = 66 + ( 13.7 x weight in kilograms ) + ( 5 x height in cm ) - ( 6.8 x age in years )
+
+The R function for the above equations is:
+
+```{r}
+bmrvalue <- function (height, weight, age, gender) {
+  if (gender == 'f') {655 + (9.6 * weight) + (1.8 * height) - ( 4.7 * age )}
+  else {66 + ( 13.7 * weight ) + ( 5 * height) - ( 6.8 * age )}
+}
+
+```
+
+A female with weight of 50 Kg, height of 164cm and age of 31 years has the following BMR:
+
+```{r}
+bmrvalue(164, 50, 31, 'f')
+```
+
+The only factor the above equations omit is lean body mass and thus the ratio of muscle-to-fat a body has. Leaner bodies need more calories than less leaner ones. Therefore, this equation will be accurate in all but the very muscular (will underestimate calorie needs) and the very fat (will over-estimate calorie needs).
+
+To calculate the total daily calories expenditure, an activity factor needs to be applied to Basal Metabolic Rate (BMR). A person who has little or no activity will has a lower activity factor than a person who regularly exercises and hance will have a lower total daily calories expenditure. The Harris Benedict Equation is the formula for calculating the total daily calories expenditure. It is listed as below:
+
+* If you are sedentary (little or no exercise) : Calorie-Calculation = BMR x 1.2
+* If you are lightly active (light exercise/sports 1-3 days/week) : Calorie-Calculation = BMR x 1.375
+* If you are moderatetely active (moderate exercise/sports 3-5 days/week) : Calorie-Calculation = BMR x 1.55
+* If you are very active (hard exercise/sports 6-7 days a week) : Calorie-Calculation = BMR x 1.725
+* If you are extra active (very hard exercise/sports & physical job or 2x training) : Calorie-Calculation = BMR x 1.9
+
+For example, for a person with BMR of 1200 who exercises 3 to 5 days per week, the total daily calories expenditure is:
+
+```{r}
+activityfactor <- 1.55
+BMR <- 1200
+BMR * activityfactor
+```
+
+The total calories needed to maintain the current weight must be the same as the total calory expenditure i.e. `r BMR*activityfactor`
+
+
+
